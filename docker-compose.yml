@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pancakes-unlimited-docker:pu-spring-docker
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://pancakes-unlimited-server.database.windows.net:1433
+      SPRING_DATASOURCE_USERNAME: super@pancakes-unlimited-server
+      SPRING_DATASOURCE_PASSWORD: Otl1.xTsh]0#
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none

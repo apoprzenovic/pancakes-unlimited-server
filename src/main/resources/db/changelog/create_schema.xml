@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="Arnes Poprzenovic">
+        <createTable tableName="ingredient">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="healthy" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Arnes Poprzenovic">
+        <createTable tableName="pancake">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="Arnes Poprzenovic">
+        <createTable tableName="pancake_ingredient">
+            <column name="pancake_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ingredient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_pancake_ingredient_pancake"
+                                 baseTableName="pancake_ingredient" baseColumnNames="pancake_id"
+                                 referencedTableName="pancake" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_pancake_ingredient_ingredient"
+                                 baseTableName="pancake_ingredient" baseColumnNames="ingredient_id"
+                                 referencedTableName="ingredient" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="5" author="Arnes Poprzenovic">
+        <createTable tableName="order">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="label" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="order_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pancake_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_order_pancake"
+                                 baseTableName="order" baseColumnNames="pancake_id"
+                                 referencedTableName="pancake" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="7" author="Arnes Poprzenovic">
+        <createTable tableName="role">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="Arnes Poprzenovic">
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="firstname" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_user_role"
+                                 baseTableName="user" baseColumnNames="role_id"
+                                 referencedTableName="role" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="10" author="Arnes Poprzenovic">
+        <createTable tableName="user_order">
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_user_order_user"
+                                 baseTableName="user_order" baseColumnNames="user_id"
+                                 referencedTableName="user" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_user_order_order"
+                                 baseTableName="user_order" baseColumnNames="order_id"
+                                 referencedTableName="order" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="12" author="Arnes Poprzenovic">
+        <sql>
+            CREATE PROCEDURE MostOrderedIngredientLastMonth
+                AS
+            BEGIN
+            SELECT TOP 1 ingredient_id, COUNT(*) as count
+            FROM [
+            order]
+                INNER JOIN pancake_ingredient
+            ON [
+            order].pancake_id = pancake_ingredient.pancake_id
+            WHERE [
+            order].order_time >= DATEADD(MONTH, -1, GETDATE())
+            GROUP BY ingredient_id
+            ORDER BY count DESC;
+            END
+        </sql>
+    </changeSet>
+
+    <changeSet id="13" author="Arnes Poprzenovic">
+        <sql>
+            CREATE PROCEDURE MostOrderedHealthyIngredientLastMonth
+                AS
+            BEGIN
+            SELECT TOP 1 ingredient_id, COUNT(*) as count
+            FROM [
+            order]
+                INNER JOIN pancake_ingredient
+            ON [
+            order].pancake_id = pancake_ingredient.pancake_id
+                INNER JOIN ingredient
+            ON pancake_ingredient.ingredient_id = ingredient.id
+            WHERE [
+            order].order_time >= DATEADD(MONTH, -1, GETDATE())
+                AND ingredient.healthy = 1
+            GROUP BY ingredient_id
+            ORDER BY count DESC;
+            END
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

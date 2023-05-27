@@ -1,0 +1,7 @@
+databaseChangeLog:
+- include:
+    file: create_schema.xml
+    relativeToChangelogFile: true
+- include:
+    file: insert_default_data.xml
+    relativeToChangelogFile: true
