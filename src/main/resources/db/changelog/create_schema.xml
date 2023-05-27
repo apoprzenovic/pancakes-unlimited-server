@@ -13,6 +13,9 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>
@@ -33,6 +36,9 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="image" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -41,6 +47,9 @@
 
     <changeSet id="3" author="Arnes Poprzenovic">
         <createTable tableName="pancake_ingredient">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="pancake_id" type="int">
                 <constraints nullable="false"/>
             </column>
@@ -60,30 +69,6 @@
     </changeSet>
 
     <changeSet id="5" author="Arnes Poprzenovic">
-        <createTable tableName="order">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="label" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="varchar(255)"/>
-            <column name="order_time" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pancake_id" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="6" author="Arnes Poprzenovic">
-        <addForeignKeyConstraint constraintName="fk_order_pancake"
-                                 baseTableName="order" baseColumnNames="pancake_id"
-                                 referencedTableName="pancake" referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet id="7" author="Arnes Poprzenovic">
         <createTable tableName="role">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -94,7 +79,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="8" author="Arnes Poprzenovic">
+    <changeSet id="6" author="Arnes Poprzenovic">
         <createTable tableName="user">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -117,33 +102,47 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="9" author="Arnes Poprzenovic">
+    <changeSet id="7" author="Arnes Poprzenovic">
         <addForeignKeyConstraint constraintName="fk_user_role"
                                  baseTableName="user" baseColumnNames="role_id"
                                  referencedTableName="role" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="10" author="Arnes Poprzenovic">
-        <createTable tableName="user_order">
+    <changeSet id="8" author="Arnes Poprzenovic">
+        <createTable tableName="order">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="user_id" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="order_id" type="int">
+            <column name="label" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="order_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pancake_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(10,2)" defaultValueNumeric="0.00">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="11" author="Arnes Poprzenovic">
-        <addForeignKeyConstraint constraintName="fk_user_order_user"
-                                 baseTableName="user_order" baseColumnNames="user_id"
+
+    <changeSet id="9" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_order_pancake"
+                                 baseTableName="order" baseColumnNames="pancake_id"
+                                 referencedTableName="pancake" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_order_user"
+                                 baseTableName="order" baseColumnNames="user_id"
                                  referencedTableName="user" referencedColumnNames="id"/>
-        <addForeignKeyConstraint constraintName="fk_user_order_order"
-                                 baseTableName="user_order" baseColumnNames="order_id"
-                                 referencedTableName="order" referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="12" author="Arnes Poprzenovic">
+    <changeSet id="10" author="Arnes Poprzenovic">
         <sql>
             CREATE PROCEDURE MostOrderedIngredientLastMonth
                 AS
@@ -162,7 +161,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="13" author="Arnes Poprzenovic">
+    <changeSet id="11" author="Arnes Poprzenovic">
         <sql>
             CREATE PROCEDURE MostOrderedHealthyIngredientLastMonth
                 AS

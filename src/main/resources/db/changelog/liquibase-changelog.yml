@@ -3,5 +3,8 @@ databaseChangeLog:
     file: create_schema.xml
     relativeToChangelogFile: true
 - include:
-    file: insert_default_data.xml
+    file: insert_default_user_data.xml
+    relativeToChangelogFile: true
+- include:
+    file: insert_default_inventory_data.xml
     relativeToChangelogFile: true

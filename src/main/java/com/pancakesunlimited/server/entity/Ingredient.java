@@ -3,6 +3,8 @@ package com.pancakesunlimited.server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,8 +20,11 @@ public class Ingredient {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "price")
-    private double price;
+    private BigDecimal price;
 
     @Column(name = "category")
     private String category;
