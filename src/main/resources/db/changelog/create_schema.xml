@@ -19,9 +19,6 @@
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="category" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
             <column name="healthy" type="boolean">
                 <constraints nullable="false"/>
             </column>
@@ -69,7 +66,7 @@
     </changeSet>
 
     <changeSet id="5" author="Arnes Poprzenovic">
-        <createTable tableName="role">
+        <createTable tableName="roles">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -80,7 +77,7 @@
     </changeSet>
 
     <changeSet id="6" author="Arnes Poprzenovic">
-        <createTable tableName="user">
+        <createTable tableName="users">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -96,24 +93,24 @@
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_id" type="int">
+            <column name="roles_id" type="int" defaultValueNumeric="1">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="7" author="Arnes Poprzenovic">
-        <addForeignKeyConstraint constraintName="fk_user_role"
-                                 baseTableName="user" baseColumnNames="role_id"
-                                 referencedTableName="role" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_users_roles"
+                                 baseTableName="users" baseColumnNames="roles_id"
+                                 referencedTableName="roles" referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="8" author="Arnes Poprzenovic">
-        <createTable tableName="order">
+        <createTable tableName="orders">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="int">
+            <column name="users_id" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="label" type="varchar(255)">
@@ -121,9 +118,6 @@
             </column>
             <column name="description" type="varchar(255)"/>
             <column name="order_time" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pancake_id" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="decimal(10,2)" defaultValueNumeric="0.00">
@@ -134,53 +128,82 @@
 
 
     <changeSet id="9" author="Arnes Poprzenovic">
-        <addForeignKeyConstraint constraintName="fk_order_pancake"
-                                 baseTableName="order" baseColumnNames="pancake_id"
-                                 referencedTableName="pancake" referencedColumnNames="id"/>
-        <addForeignKeyConstraint constraintName="fk_order_user"
-                                 baseTableName="order" baseColumnNames="user_id"
-                                 referencedTableName="user" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_order_users"
+                                 baseTableName="orders" baseColumnNames="users_id"
+                                 referencedTableName="users" referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="10" author="Arnes Poprzenovic">
+        <createTable tableName="orders_pancake">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="orders_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pancake_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="Arnes Poprzenovic">
+        <addForeignKeyConstraint constraintName="fk_orders_pancake_order"
+                                 baseTableName="orders_pancake" baseColumnNames="orders_id"
+                                 referencedTableName="orders" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_orders_pancake_pancake"
+                                 baseTableName="orders_pancake" baseColumnNames="pancake_id"
+                                 referencedTableName="pancake" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="12" author="Arnes Poprzenovic">
         <sql>
             CREATE PROCEDURE MostOrderedIngredientLastMonth
                 AS
             BEGIN
             SELECT TOP 1 ingredient_id, COUNT(*) as count
-            FROM [
-            order]
+            FROM orders_pancake
                 INNER JOIN pancake_ingredient
-            ON [
-            order].pancake_id = pancake_ingredient.pancake_id
-            WHERE [
-            order].order_time >= DATEADD(MONTH, -1, GETDATE())
+            ON orders_pancake.pancake_id = pancake_ingredient.pancake_id
+                INNER JOIN orders
+                ON orders_pancake.orders_id = orders.id
+            WHERE orders.order_time >= DATEADD(MONTH, -1, GETDATE())
             GROUP BY ingredient_id
             ORDER BY count DESC;
             END
         </sql>
     </changeSet>
 
-    <changeSet id="11" author="Arnes Poprzenovic">
+
+    <changeSet id="13" author="Arnes Poprzenovic">
         <sql>
             CREATE PROCEDURE MostOrderedHealthyIngredientLastMonth
                 AS
             BEGIN
             SELECT TOP 1 ingredient_id, COUNT(*) as count
-            FROM [
-            order]
+            FROM orders
+                INNER JOIN orders_pancake
+            ON orders.id = orders_pancake.orders_id
                 INNER JOIN pancake_ingredient
-            ON [
-            order].pancake_id = pancake_ingredient.pancake_id
+                ON orders_pancake.pancake_id = pancake_ingredient.pancake_id
                 INNER JOIN ingredient
-            ON pancake_ingredient.ingredient_id = ingredient.id
-            WHERE [
-            order].order_time >= DATEADD(MONTH, -1, GETDATE())
-                AND ingredient.healthy = 1
+                ON pancake_ingredient.ingredient_id = ingredient.id
+            WHERE orders.order_time >= DATEADD(MONTH
+                , -1
+                , GETDATE())
+              AND ingredient.healthy = 1
             GROUP BY ingredient_id
             ORDER BY count DESC;
             END
         </sql>
+    </changeSet>
+
+    <changeSet id="14" author="Arnes Poprzenovic">
+        <addColumn tableName="pancake">
+            <column name="price" type="decimal(10,2)" defaultValueNumeric="0.00">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 
 

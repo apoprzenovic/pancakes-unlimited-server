@@ -2,7 +2,6 @@ package com.pancakesunlimited.server.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -15,7 +14,7 @@ public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -25,9 +24,6 @@ public class Ingredient {
 
     @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "category")
-    private String category;
 
     @Column(name = "healthy")
     private boolean healthy;

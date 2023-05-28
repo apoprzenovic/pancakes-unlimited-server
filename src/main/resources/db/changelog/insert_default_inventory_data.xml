@@ -5,28 +5,26 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <!-- insert default data for ingredient table -->
     <changeSet id="1" author="Arnes Poprzenovic">
         <insert tableName="ingredient">
             <column name="name" value="Crepe"/>
             <column name="type" value="base"/>
             <column name="price" value="2.50"/>
-            <column name="category" value="base"/>
-            <column name="healthy" value="true"/>
+            <column name="healthy" value="false"/>
             <column name="image" value="crepe_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="American Pancake"/>
             <column name="type" value="base"/>
             <column name="price" value="3.00"/>
-            <column name="category" value="base"/>
-            <column name="healthy" value="true"/>
+            <column name="healthy" value="false"/>
             <column name="image" value="american_pancake_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Oreo"/>
             <column name="type" value="topping"/>
             <column name="price" value="1.00"/>
-            <column name="category" value="topping"/>
             <column name="healthy" value="false"/>
             <column name="image" value="oreo_image_url"/>
         </insert>
@@ -34,7 +32,6 @@
             <column name="name" value="Strawberries"/>
             <column name="type" value="topping"/>
             <column name="price" value="1.50"/>
-            <column name="category" value="topping"/>
             <column name="healthy" value="true"/>
             <column name="image" value="strawberry_image_url"/>
         </insert>
@@ -42,7 +39,6 @@
             <column name="name" value="Nutella"/>
             <column name="type" value="topping"/>
             <column name="price" value="1.50"/>
-            <column name="category" value="topping"/>
             <column name="healthy" value="false"/>
             <column name="image" value="nutella_image_url"/>
         </insert>
@@ -72,15 +68,33 @@
         </insert>
     </changeSet>
 
-    <!-- Insert default data for order table -->
+    <!-- Insert default data for orders table -->
     <changeSet id="4" author="Arnes Poprzenovic">
-        <insert tableName="order">
-            <column name="user_id" value="1"/>
+        <insert tableName="orders">
+            <column name="users_id" value="1"/>
             <column name="label" value="Order 1"/>
             <column name="description" value="First order"/>
             <column name="order_time" value="2023-05-27 3:52:42"/>
+        </insert>
+        <insert tableName="orders_pancake">
+            <column name="orders_id" value="1"/>
             <column name="pancake_id" value="1"/>
         </insert>
     </changeSet>
+
+    <!-- Insert default data for orders table -->
+    <changeSet id="5" author="Arnes Poprzenovic">
+        <insert tableName="orders">
+            <column name="users_id" value="1"/>
+            <column name="label" value="Order 2"/>
+            <column name="description" value="Second order"/>
+            <column name="order_time" value="2023-05-28 4:52:42"/>
+        </insert>
+        <insert tableName="orders_pancake">
+            <column name="orders_id" value="2"/>
+            <column name="pancake_id" value="1"/>
+        </insert>
+    </changeSet>
+
 
 </databaseChangeLog>

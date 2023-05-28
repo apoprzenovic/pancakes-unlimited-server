@@ -1,29 +1,32 @@
 package com.pancakesunlimited.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Order {
+@Table(name = "orders")
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
     @Column(name = "label")
     private String label;
@@ -31,12 +34,13 @@ public class Order {
     @Column(name = "description")
     private String description;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_time")
     private LocalDateTime orderTime;
 
-    @ManyToOne
-    @JoinColumn(name = "pancake_id")
-    private Pancake pancake;
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference
+    private List<OrdersPancake> ordersPancakes;
 
     @Column(name = "price")
     private BigDecimal price;

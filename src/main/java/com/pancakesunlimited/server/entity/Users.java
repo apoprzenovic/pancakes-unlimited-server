@@ -8,12 +8,12 @@ import org.mindrot.jbcrypt.BCrypt;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @Column(name = "email")
     private String email;
@@ -28,8 +28,8 @@ public class User {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @JoinColumn(name = "roles_id")
+    private Roles roles;
 
     public String hashPassword(String passwordToBeHashed) {
         String salt = BCrypt.gensalt(12);
@@ -40,12 +40,12 @@ public class User {
         this.password = hashPassword(password);
     }
 
-    public User(String email, String username, String lastname, String password, Role role) {
+    public Users(String email, String username, String lastname, String password, Roles roles) {
         this.email = email;
         this.username = username;
         this.lastname = lastname;
         this.password = hashPassword(password);
-        this.role = role;
+        this.roles = roles;
     }
 
 }

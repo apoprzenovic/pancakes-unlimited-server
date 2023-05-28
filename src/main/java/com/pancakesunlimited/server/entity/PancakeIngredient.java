@@ -16,7 +16,7 @@ public class PancakeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "pancake_id")

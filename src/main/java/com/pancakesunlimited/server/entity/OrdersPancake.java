@@ -1,6 +1,6 @@
 package com.pancakesunlimited.server.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,17 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "pancake")
-public class Pancake {
+@Table(name = "orders_pancake")
+public class OrdersPancake {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "orders_id")
+    @JsonBackReference
+    private Orders order;
 
-    @Column(name = "image")
-    private String image;
-
+    @ManyToOne
+    @JoinColumn(name = "pancake_id")
+    @JsonBackReference
+    private Pancake pancake;
 }
