@@ -8,29 +8,62 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Arnes Poprzenovic
+ * Service class for the {@link Users} Entity
+ */
 @Service
 public class UsersService {
 
     private final UsersRepository usersRepository;
 
+    /**
+     * Constructor for the UsersService class
+     *
+     * @param usersRepository - the repository for the {@link Users} Entity
+     */
     @Autowired
-    public UsersService(UsersRepository usersRepository){
+    public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
+    /**
+     * Method to get all users using {@link UsersRepository}
+     *
+     * @return - a list of all users
+     */
     public List<Users> getAllUsers() {
         return usersRepository.findAll();
     }
 
+    /**
+     * Method to get a user by id using {@link UsersRepository}
+     *
+     * @param id - the id of the user to be returned
+     * @return - the user with the specified id
+     */
     public Users getUserById(Integer id) {
         return usersRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User" + "id: " + id));
     }
 
+    /**
+     * Method to create a user using {@link UsersRepository}
+     *
+     * @param user - the user to be created
+     * @return - the created user
+     */
     public Users createUser(Users user) {
         return usersRepository.save(user);
     }
 
+    /**
+     * Method to update a user using {@link UsersRepository}
+     *
+     * @param id          - the id of the user to be updated
+     * @param userDetails - the user details to be updated
+     * @return - the updated user
+     */
     public Users updateUser(Integer id, Users userDetails) {
         Users newUser = getUserById(id);
         newUser.setEmail(userDetails.getEmail());
@@ -41,6 +74,11 @@ public class UsersService {
         return usersRepository.save(newUser);
     }
 
+    /**
+     * Method to delete a user using {@link UsersRepository}
+     *
+     * @param id - the id of the user to be deleted
+     */
     public void deleteUser(Integer id) {
         Users user = getUserById(id);
         usersRepository.delete(user);

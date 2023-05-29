@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Arnes Poprzenovic
+ * Entity class for the roles table
+ */
 
 @Entity
 @Data

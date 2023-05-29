@@ -12,6 +12,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author Arnes Poprzenovic
+ * Entity class for the orders table
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -34,7 +38,7 @@ public class Orders {
     @Column(name = "description")
     private String description;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "order_time")
     private LocalDateTime orderTime;
 

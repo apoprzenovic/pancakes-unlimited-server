@@ -7,6 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Arnes Poprzenovic
+ * Entity class for the orders_pancake table
+ */
 @Entity
 @Data
 @AllArgsConstructor

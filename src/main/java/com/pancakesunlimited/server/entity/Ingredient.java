@@ -2,8 +2,13 @@ package com.pancakesunlimited.server.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.math.BigDecimal;
 
+/**
+ * @author Arnes Poprzenovic
+ * Entity class for the ingredient table
+ */
 @Entity
 @Data
 @AllArgsConstructor

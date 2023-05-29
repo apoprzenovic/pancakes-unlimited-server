@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author Arnes Poprzenovic
+ * Entity class for the pancake table
+ */
 @Entity
 @Data
 @AllArgsConstructor
@@ -29,6 +33,7 @@ public class Pancake {
 
     @Column(name = "price")
     private BigDecimal price;
+
 
     @ManyToMany
     @JoinTable(

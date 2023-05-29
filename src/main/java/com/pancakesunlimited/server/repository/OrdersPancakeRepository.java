@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * @author Arnes Poprzenovic
+ * Repository class for the {@link OrdersPancake} Entity
+ */
 public interface OrdersPancakeRepository extends JpaRepository<OrdersPancake, Integer> {
     List<OrdersPancake> findByOrderAndPancake(Orders order, Pancake pancake);
 }
