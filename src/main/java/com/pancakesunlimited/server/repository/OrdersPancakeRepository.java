@@ -5,8 +5,8 @@ import com.pancakesunlimited.server.entity.OrdersPancake;
 import com.pancakesunlimited.server.entity.Pancake;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface OrdersPancakeRepository extends JpaRepository<OrdersPancake, Integer> {
-    Optional<OrdersPancake> findByOrderAndPancake(Orders order, Pancake pancake);
+    List<OrdersPancake> findByOrderAndPancake(Orders order, Pancake pancake);
 }

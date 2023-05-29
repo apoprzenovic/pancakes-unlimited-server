@@ -49,6 +49,7 @@
         <insert tableName="pancake">
             <column name="image" value="pancake_image_url"/>
             <column name="name" value="Crepe with Nutella and Strawberries"/>
+            <column name="price" value="5.50"/>
         </insert>
     </changeSet>
 

@@ -11,12 +11,13 @@ import java.util.List;
 @Service
 public class IngredientService {
 
-
     private final IngredientRepository ingredientRepository;
+    private final PancakeService pancakeService;
 
     @Autowired
-    public IngredientService(IngredientRepository ingredientRepository) {
+    public IngredientService(IngredientRepository ingredientRepository, PancakeService pancakeService) {
         this.ingredientRepository = ingredientRepository;
+        this.pancakeService = pancakeService;
     }
 
     public Integer getMostOrderedIngredientLastMonth() {
@@ -47,7 +48,10 @@ public class IngredientService {
         ingredient.setHealthy(ingredientDetails.isHealthy());
         ingredient.setPrice(ingredientDetails.getPrice());
         ingredient.setImage(ingredientDetails.getImage());
-        return ingredientRepository.save(ingredient);
+        Ingredient updatedIngredient = ingredientRepository.save(ingredient);
+
+        pancakeService.recalculatePancakePrices(updatedIngredient);
+        return updatedIngredient;
     }
 
     public void deleteIngredient(Integer id) {
