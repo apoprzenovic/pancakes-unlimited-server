@@ -88,7 +88,7 @@ public class IngredientService {
     public Ingredient updateIngredient(Integer id, Ingredient ingredientDetails) {
         Ingredient ingredient = getIngredientById(id);
         ingredient.setName(ingredientDetails.getName());
-        ingredient.setType(ingredientDetails.getType());
+        ingredient.setCategory(ingredientDetails.getCategory());
         ingredient.setHealthy(ingredientDetails.isHealthy());
         ingredient.setPrice(ingredientDetails.getPrice());
         ingredient.setImage(ingredientDetails.getImage());

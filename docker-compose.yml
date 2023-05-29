@@ -8,7 +8,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:sqlserver://pancakes-unlimited-server.database.windows.net:1433
-      SPRING_DATASOURCE_USERNAME: super@pancakes-unlimited-server
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://pancakes-unlimited-server.database.windows.net:1433;database=pancakes-unlimited-database
+      SPRING_DATASOURCE_USERNAME: super
       SPRING_DATASOURCE_PASSWORD: Otl1.xTsh]0#
+      SPRING_LIQUIBASE_URL: jdbc:sqlserver://pancakes-unlimited-server.database.windows.net:1433;databaseName=pancakes-unlimited-database;encrypt=true;trustServerCertificate=false;loginTimeout=30;
+      SPRING_LIQUIBASE_USER: super
+      SPRING_LIQUIBASE_PASSWORD: Otl1.xTsh]0#
       SPRING_JPA_HIBERNATE_DDL_AUTO: none

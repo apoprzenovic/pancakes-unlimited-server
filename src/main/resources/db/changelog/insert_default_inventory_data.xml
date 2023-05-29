@@ -9,35 +9,35 @@
     <changeSet id="1" author="Arnes Poprzenovic">
         <insert tableName="ingredient">
             <column name="name" value="Crepe"/>
-            <column name="type" value="base"/>
+            <column name="category" value="base"/>
             <column name="price" value="2.50"/>
             <column name="healthy" value="false"/>
             <column name="image" value="crepe_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="American Pancake"/>
-            <column name="type" value="base"/>
+            <column name="category" value="base"/>
             <column name="price" value="3.00"/>
             <column name="healthy" value="false"/>
             <column name="image" value="american_pancake_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Oreo"/>
-            <column name="type" value="topping"/>
+            <column name="category" value="topping"/>
             <column name="price" value="1.00"/>
             <column name="healthy" value="false"/>
             <column name="image" value="oreo_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Strawberries"/>
-            <column name="type" value="topping"/>
+            <column name="category" value="fruit"/>
             <column name="price" value="1.50"/>
             <column name="healthy" value="true"/>
             <column name="image" value="strawberry_image_url"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Nutella"/>
-            <column name="type" value="topping"/>
+            <column name="category" value="filling"/>
             <column name="price" value="1.50"/>
             <column name="healthy" value="false"/>
             <column name="image" value="nutella_image_url"/>

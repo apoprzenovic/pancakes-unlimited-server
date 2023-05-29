@@ -24,8 +24,8 @@ public class Ingredient {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "price")
     private BigDecimal price;

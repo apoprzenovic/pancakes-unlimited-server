@@ -13,7 +13,7 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="varchar(255)">
+            <column name="category" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="decimal(10,2)">
