@@ -23,7 +23,7 @@ public class Users {
     private String email;
 
     @Column(name = "firstname")
-    private String username;
+    private String firstname;
 
     @Column(name = "lastname")
     private String lastname;
@@ -39,14 +39,14 @@ public class Users {
      * Constructor for the Users class
      *
      * @param email    The email of the user
-     * @param username The username of the user
+     * @param firstname The username of the user
      * @param lastname The lastname of the user
      * @param password The password of the user which gets hashed before saving
      * @param roles    The role of the user
      */
-    public Users(String email, String username, String lastname, String password, Roles roles) {
+    public Users(String email, String firstname, String lastname, String password, Roles roles) {
         this.email = email;
-        this.username = username;
+        this.firstname = firstname;
         this.lastname = lastname;
         this.password = hashPassword(password);
         this.roles = roles;

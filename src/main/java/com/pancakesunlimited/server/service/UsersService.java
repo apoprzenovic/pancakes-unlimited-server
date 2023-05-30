@@ -71,7 +71,7 @@ public class UsersService {
         if (getUserByEmail(userDetails.getEmail()) != null)
             throw new ResourceNotFoundException("There is already a user registered with the email: " + userDetails.getEmail());
         newUser.setEmail(userDetails.getEmail());
-        newUser.setUsername(userDetails.getUsername());
+        newUser.setFirstname(userDetails.getFirstname());
         newUser.setLastname(userDetails.getLastname());
         newUser.setPassword(userDetails.getPassword());
         newUser.setRoles(userDetails.getRoles());
