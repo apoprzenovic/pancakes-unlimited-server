@@ -82,4 +82,15 @@ public class UsersController {
     public void deleteUser(@PathVariable Integer id) {
         usersService.deleteUser(id);
     }
+
+    /**
+     * Method to get a user by email using {@link UsersService}
+     *
+     * @param email - the email of the user to be returned
+     * @return - the user with the specified email
+     */
+    @GetMapping("/email/{email}")
+    public Users getUserByEmail(@PathVariable String email) {
+        return usersService.getUserByEmail(email);
+    }
 }

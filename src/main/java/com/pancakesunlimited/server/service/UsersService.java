@@ -54,6 +54,8 @@ public class UsersService {
      * @return - the created user
      */
     public Users createUser(Users user) {
+        if (getUserByEmail(user.getEmail()) != null)
+            throw new ResourceNotFoundException("There is already a user registered with the email: " + user.getEmail());
         return usersRepository.save(user);
     }
 
@@ -66,6 +68,8 @@ public class UsersService {
      */
     public Users updateUser(Integer id, Users userDetails) {
         Users newUser = getUserById(id);
+        if (getUserByEmail(userDetails.getEmail()) != null)
+            throw new ResourceNotFoundException("There is already a user registered with the email: " + userDetails.getEmail());
         newUser.setEmail(userDetails.getEmail());
         newUser.setUsername(userDetails.getUsername());
         newUser.setLastname(userDetails.getLastname());
@@ -82,5 +86,15 @@ public class UsersService {
     public void deleteUser(Integer id) {
         Users user = getUserById(id);
         usersRepository.delete(user);
+    }
+
+    /**
+     * Method to get a user by email using {@link UsersRepository}
+     *
+     * @param email - the email of the user to be returned
+     * @return - the user with the specified email
+     */
+    public Users getUserByEmail(String email) {
+        return usersRepository.findByEmail(email);
     }
 }
