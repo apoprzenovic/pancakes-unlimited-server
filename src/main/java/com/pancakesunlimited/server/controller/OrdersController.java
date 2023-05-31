@@ -107,4 +107,15 @@ public class OrdersController {
     public Orders removePancakeFromOrder(@PathVariable Integer orderId, @PathVariable Integer pancakeId) {
         return ordersService.removePancakeFromOrder(orderId, pancakeId);
     }
+
+    /**
+     * Method to get all orders for a specific user using {@link OrdersService}
+     *
+     * @param userId - the id of the user whose orders should be returned
+     * @return - a list of all orders for the specified user
+     */
+    @GetMapping("/user/{userId}")
+    public List<Orders> getUserOrders(@PathVariable Integer userId) {
+        return ordersService.getUserOrders(userId);
+    }
 }

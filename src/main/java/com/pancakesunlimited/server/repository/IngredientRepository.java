@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Arnes Poprzenovic
  * Repository class for {@link Ingredient} entity
@@ -19,7 +21,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Integer>
      * @return the id of the most ordered ingredient last month
      */
     @Procedure("MostOrderedIngredientLastMonth")
-    Integer getMostOrderedIngredientLastMonth();
+    List<Integer> getMostOrderedIngredientLastMonth();
 
     /**
      * Stored procedure to get the most ordered healthy ingredient last month
@@ -28,7 +30,9 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Integer>
      * @return the id of the most ordered healthy ingredient last month
      */
     @Procedure("MostOrderedHealthyIngredientLastMonth")
-    Integer getMostOrderedHealthyIngredientLastMonth();
+    List<Integer> getMostOrderedHealthyIngredientLastMonth();
+
+    Ingredient findOneById(Integer id);
 }
 
 // In order to save to a database, save() method is needed because of:

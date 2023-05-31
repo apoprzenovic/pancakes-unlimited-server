@@ -90,7 +90,7 @@ public class IngredientController {
      * @return the id of the most ordered ingredient last month
      */
     @GetMapping("/mostOrderedLastMonth")
-    public Integer getMostOrderedIngredientLastMonth() {
+    public Ingredient getMostOrderedIngredientLastMonth() {
         return ingredientService.getMostOrderedIngredientLastMonth();
     }
 
@@ -100,7 +100,7 @@ public class IngredientController {
      * @return the id of the most ordered healthy ingredient last month
      */
     @GetMapping("/mostOrderedHealthyLastMonth")
-    public Integer getMostOrderedHealthyIngredientLastMonth() {
+    public Ingredient getMostOrderedHealthyIngredientLastMonth() {
         return ingredientService.getMostOrderedHealthyIngredientLastMonth();
     }
 }

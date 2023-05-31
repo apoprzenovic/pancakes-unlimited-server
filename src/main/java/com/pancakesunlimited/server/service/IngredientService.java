@@ -5,6 +5,7 @@ import com.pancakesunlimited.server.exception.ResourceNotFoundException;
 import com.pancakesunlimited.server.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,8 +36,14 @@ public class IngredientService {
      *
      * @return - the id of the most ordered ingredient last month
      */
-    public Integer getMostOrderedIngredientLastMonth() {
-        return ingredientRepository.getMostOrderedIngredientLastMonth();
+    @Transactional(readOnly = true)
+    public Ingredient getMostOrderedIngredientLastMonth() {
+        List<Integer> results = ingredientRepository.getMostOrderedIngredientLastMonth();
+        if (results != null && !results.isEmpty()) {
+            return ingredientRepository.findOneById(results.get(0));
+        } else {
+            throw new ResourceNotFoundException("Stored procedure MostOrderedIngredientLastMonth returned no results");
+        }
     }
 
     /**
@@ -44,8 +51,14 @@ public class IngredientService {
      *
      * @return - the id of the most ordered healthy ingredient last month
      */
-    public Integer getMostOrderedHealthyIngredientLastMonth() {
-        return ingredientRepository.getMostOrderedHealthyIngredientLastMonth();
+    @Transactional(readOnly = true)
+    public Ingredient getMostOrderedHealthyIngredientLastMonth() {
+        List<Integer> results = ingredientRepository.getMostOrderedHealthyIngredientLastMonth();
+        if (results != null && !results.isEmpty()) {
+            return ingredientRepository.findOneById(results.get(0));
+        } else {
+            throw new ResourceNotFoundException("Stored procedure MostOrderedHealthyIngredientLastMonth returned no results");
+        }
     }
 
     /**

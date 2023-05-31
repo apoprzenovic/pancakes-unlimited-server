@@ -174,4 +174,13 @@ public class OrdersService {
     }
 
 
+    /**
+     * Method to get all orders for a user
+     *
+     * @param userId - the id of the user
+     * @return - a list of all orders for the user
+     */
+    public List<Orders> getUserOrders(Integer userId) {
+        return ordersRepository.findAllByUsersId(userId);
+    }
 }
