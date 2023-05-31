@@ -86,17 +86,34 @@ public class IngredientService {
      * @return - the updated ingredient
      */
     public Ingredient updateIngredient(Integer id, Ingredient ingredientDetails) {
-        Ingredient ingredient = getIngredientById(id);
-        ingredient.setName(ingredientDetails.getName());
-        ingredient.setCategory(ingredientDetails.getCategory());
-        ingredient.setHealthy(ingredientDetails.isHealthy());
-        ingredient.setPrice(ingredientDetails.getPrice());
-        ingredient.setImage(ingredientDetails.getImage());
-        Ingredient updatedIngredient = ingredientRepository.save(ingredient);
+        Ingredient currentIngredient = getIngredientById(id);
+
+        if (ingredientDetails.getName() != null && !ingredientDetails.getName().isEmpty()) {
+            currentIngredient.setName(ingredientDetails.getName());
+        }
+
+        if (ingredientDetails.getCategory() != null && !ingredientDetails.getCategory().isEmpty()) {
+            currentIngredient.setCategory(ingredientDetails.getCategory());
+        }
+
+        if (ingredientDetails.getHealthy() != null) {
+            currentIngredient.setHealthy(ingredientDetails.getHealthy());
+        }
+
+        if (ingredientDetails.getPrice() != null) {
+            currentIngredient.setPrice(ingredientDetails.getPrice());
+        }
+
+        if (ingredientDetails.getImage() != null && !ingredientDetails.getImage().isEmpty()) {
+            currentIngredient.setImage(ingredientDetails.getImage());
+        }
+
+        Ingredient updatedIngredient = ingredientRepository.save(currentIngredient);
 
         pancakeService.recalculatePancakePrices(updatedIngredient);
         return updatedIngredient;
     }
+
 
     /**
      * Method to delete an ingredient using {@link IngredientRepository}

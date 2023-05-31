@@ -77,13 +77,27 @@ public class OrdersService {
      * @return - the updated order
      */
     public Orders updateOrder(Integer id, Orders orderDetails) {
-        Orders order = getOrderById(id);
-        order.setLabel(orderDetails.getLabel());
-        order.setDescription(orderDetails.getDescription());
-        order.setOrderTime(orderDetails.getOrderTime());
-        order.setOrdersPancakes(orderDetails.getOrdersPancakes());
-        calculatePrice(order);
-        return ordersRepository.save(order);
+        Orders currentOrder = getOrderById(id);
+
+        if (orderDetails.getLabel() != null) {
+            currentOrder.setLabel(orderDetails.getLabel());
+        }
+
+        if (orderDetails.getDescription() != null) {
+            currentOrder.setDescription(orderDetails.getDescription());
+        }
+
+        if (orderDetails.getOrderTime() != null) {
+            currentOrder.setOrderTime(orderDetails.getOrderTime());
+        }
+
+        if (orderDetails.getOrdersPancakes() != null && !orderDetails.getOrdersPancakes().isEmpty()) {
+            currentOrder.setOrdersPancakes(orderDetails.getOrdersPancakes());
+        }
+
+        calculatePrice(currentOrder);
+
+        return ordersRepository.save(currentOrder);
     }
 
     /**

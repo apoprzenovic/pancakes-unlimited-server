@@ -67,16 +67,33 @@ public class UsersService {
      * @return - the updated user
      */
     public Users updateUser(Integer id, Users userDetails) {
-        Users newUser = getUserById(id);
-        if (getUserByEmail(userDetails.getEmail()) != null)
-            throw new ResourceNotFoundException("There is already a user registered with the email: " + userDetails.getEmail());
-        newUser.setEmail(userDetails.getEmail());
-        newUser.setFirstname(userDetails.getFirstname());
-        newUser.setLastname(userDetails.getLastname());
-        newUser.setPassword(userDetails.getPassword());
-        newUser.setRoles(userDetails.getRoles());
-        return usersRepository.save(newUser);
+        Users currentUser = getUserById(id);
+
+        if (userDetails.getEmail() != null && !userDetails.getEmail().isEmpty()) {
+            if (getUserByEmail(userDetails.getEmail()) != null)
+                throw new ResourceNotFoundException("There is already a user registered with the email: " + userDetails.getEmail());
+            currentUser.setEmail(userDetails.getEmail());
+        }
+
+        if (userDetails.getFirstname() != null && !userDetails.getFirstname().isEmpty()) {
+            currentUser.setFirstname(userDetails.getFirstname());
+        }
+
+        if (userDetails.getLastname() != null && !userDetails.getLastname().isEmpty()) {
+            currentUser.setLastname(userDetails.getLastname());
+        }
+
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            currentUser.setPassword(userDetails.getPassword());
+        }
+
+        if (userDetails.getRoles() != null) {
+            currentUser.setRoles(userDetails.getRoles());
+        }
+
+        return usersRepository.save(currentUser);
     }
+
 
     /**
      * Method to delete a user using {@link UsersRepository}

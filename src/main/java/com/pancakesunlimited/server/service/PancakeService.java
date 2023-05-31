@@ -72,14 +72,26 @@ public class PancakeService {
      * @param pancakeDetails - the pancake details to be updated
      * @return - the updated pancake
      */
-    public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
-        Pancake newPancake = getPancakeById(id);
-        newPancake.setName(pancakeDetails.getName());
-        newPancake.setImage(pancakeDetails.getImage());
-        fetchIngredients(newPancake);
-        calculatePrice(newPancake);
-        return pancakeRepository.save(newPancake);
+public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
+    Pancake currentPancake = getPancakeById(id);
+
+    if (pancakeDetails.getName() != null && !pancakeDetails.getName().isEmpty()) {
+        currentPancake.setName(pancakeDetails.getName());
     }
+
+    if (pancakeDetails.getImage() != null && !pancakeDetails.getImage().isEmpty()) {
+        currentPancake.setImage(pancakeDetails.getImage());
+    }
+
+    if (pancakeDetails.getIngredients() != null && !pancakeDetails.getIngredients().isEmpty()) {
+        fetchIngredients(currentPancake);
+    }
+
+    calculatePrice(currentPancake);
+
+    return pancakeRepository.save(currentPancake);
+}
+
 
     /**
      * Method to calculate the price of a pancake

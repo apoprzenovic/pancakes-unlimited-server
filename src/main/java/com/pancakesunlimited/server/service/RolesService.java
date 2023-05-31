@@ -65,10 +65,15 @@ public class RolesService {
      * @return - the updated role
      */
     public Roles updateRole(Integer id, Roles roleDetails) {
-        Roles newRole = getRoleById(id);
-        newRole.setName(roleDetails.getName());
-        return rolesRepository.save(newRole);
+        Roles currentRole = getRoleById(id);
+
+        if (roleDetails.getName() != null && !roleDetails.getName().isEmpty()) {
+            currentRole.setName(roleDetails.getName());
+        }
+
+        return rolesRepository.save(currentRole);
     }
+
 
     /**
      * Method to delete a role using {@link RolesRepository}

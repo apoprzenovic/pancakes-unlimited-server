@@ -31,7 +31,7 @@ public class Ingredient {
     private BigDecimal price;
 
     @Column(name = "healthy")
-    private boolean healthy;
+    private Boolean healthy;
 
     @Column(name = "image")
     private String image;
