@@ -3,12 +3,17 @@ package com.pancakesunlimited.server.service;
 import com.pancakesunlimited.server.entity.Orders;
 import com.pancakesunlimited.server.entity.OrdersPancake;
 import com.pancakesunlimited.server.entity.Pancake;
+import com.pancakesunlimited.server.entity.Users;
+import com.pancakesunlimited.server.enums.UserRole;
 import com.pancakesunlimited.server.exception.ResourceNotFoundException;
 import com.pancakesunlimited.server.repository.OrdersPancakeRepository;
 import com.pancakesunlimited.server.repository.OrdersRepository;
 import com.pancakesunlimited.server.repository.PancakeRepository;
+import com.pancakesunlimited.server.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,6 +28,7 @@ public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final PancakeRepository pancakeRepository;
     private final OrdersPancakeRepository ordersPancakeRepository;
+    private final UsersRepository usersRepository;
 
     /**
      * Constructor for the OrdersService class
@@ -32,10 +38,11 @@ public class OrdersService {
      * @param ordersPancakeRepository - the repository for the {@link OrdersPancake} Entity
      */
     @Autowired
-    public OrdersService(OrdersRepository ordersRepository, PancakeRepository pancakeRepository, OrdersPancakeRepository ordersPancakeRepository) {
+    public OrdersService(OrdersRepository ordersRepository, PancakeRepository pancakeRepository, OrdersPancakeRepository ordersPancakeRepository, UsersRepository usersRepository) {
         this.ordersRepository = ordersRepository;
         this.pancakeRepository = pancakeRepository;
         this.ordersPancakeRepository = ordersPancakeRepository;
+        this.usersRepository = usersRepository;
     }
 
     /**
@@ -43,7 +50,10 @@ public class OrdersService {
      *
      * @return - a list of all orders
      */
-    public List<Orders> getAllOrders() {
+    public List<Orders> getAllOrders(Integer userId) {
+        if (!checkIfUserIsStoreOwner(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User does not have appropriate permissions");
+        }
         return ordersRepository.findAll();
     }
 
@@ -53,7 +63,10 @@ public class OrdersService {
      * @param id - the id of the order to be returned
      * @return - the order with the specified id
      */
-    public Orders getOrderById(Integer id) {
+    public Orders getOrderById(Integer id, Integer userId) {
+        if (!checkIfUserIsStoreOwner(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User does not have appropriate permissions");
+        }
         return ordersRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order" + "id: " + id));
     }
@@ -77,7 +90,7 @@ public class OrdersService {
      * @return - the updated order
      */
     public Orders updateOrder(Integer id, Orders orderDetails) {
-        Orders currentOrder = getOrderById(id);
+        Orders currentOrder = getOrderByIdOnly(id);
 
         if (orderDetails.getLabel() != null) {
             currentOrder.setLabel(orderDetails.getLabel());
@@ -106,8 +119,18 @@ public class OrdersService {
      * @param id - the id of the order to be deleted
      */
     public void deleteOrder(Integer id) {
-        Orders order = getOrderById(id);
+        Orders order = getOrderByIdOnly(id);
         ordersRepository.delete(order);
+    }
+
+    /**
+     * Method get Order by id only using {@link OrdersRepository}
+     * @param id - the id of the order to be returned
+     * @return - the order with the specified id
+     */
+    private Orders getOrderByIdOnly(Integer id) {
+        return ordersRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order" + "id: " + id));
     }
 
     /**
@@ -137,7 +160,7 @@ public class OrdersService {
      * @return - the order with the added pancake
      */
     public Orders addPancakeToOrder(Integer orderId, Integer pancakeId) {
-        Orders order = getOrderById(orderId);
+        Orders order = getOrderByIdOnly(orderId);
         Pancake pancake = pancakeRepository.findById(pancakeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pancake" + "id: " + pancakeId));
         OrdersPancake ordersPancake = new OrdersPancake();
@@ -156,7 +179,7 @@ public class OrdersService {
      * @return - the order with the removed pancake
      */
     public Orders removePancakeFromOrder(Integer orderId, Integer pancakeId) {
-        Orders order = getOrderById(orderId);
+        Orders order = getOrderByIdOnly(orderId);
         Pancake pancake = pancakeRepository.findById(pancakeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pancake" + " id: " + pancakeId));
         List<OrdersPancake> ordersPancakes = ordersPancakeRepository.findByOrderAndPancake(order, pancake);
@@ -182,5 +205,17 @@ public class OrdersService {
      */
     public List<Orders> getUserOrders(Integer userId) {
         return ordersRepository.findAllByUsersId(userId);
+    }
+
+    /**
+     * Method to check if a user is a store owner using {@link UsersRepository}
+     *
+     * @param userId - the id of the user to be checked
+     * @return - true if the user is a store owner, false otherwise
+     */
+    public boolean checkIfUserIsStoreOwner(Integer userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User" + "id: " + userId));
+        return user.getRoles().getId() == UserRole.STORE_OWNER.getId();
     }
 }

@@ -34,8 +34,8 @@ public class OrdersController {
      * @return - a list of all orders
      */
     @GetMapping
-    public List<Orders> getAllOrders() {
-        return ordersService.getAllOrders();
+    public List<Orders> getAllOrders(@RequestParam Integer userId) {
+        return ordersService.getAllOrders(userId);
     }
 
     /**
@@ -45,8 +45,8 @@ public class OrdersController {
      * @return - the order with the specified id
      */
     @GetMapping("/{id}")
-    public Orders getOrder(@PathVariable Integer id) {
-        return ordersService.getOrderById(id);
+    public Orders getOrder(@PathVariable Integer id, @RequestParam Integer userId) {
+        return ordersService.getOrderById(id, userId);
     }
 
     /**
