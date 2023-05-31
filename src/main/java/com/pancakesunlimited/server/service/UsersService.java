@@ -3,7 +3,9 @@ package com.pancakesunlimited.server.service;
 import com.pancakesunlimited.server.entity.Users;
 import com.pancakesunlimited.server.exception.ResourceNotFoundException;
 import com.pancakesunlimited.server.repository.UsersRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -113,5 +115,21 @@ public class UsersService {
      */
     public Users getUserByEmail(String email) {
         return usersRepository.findByEmail(email);
+    }
+
+    /**
+     * Method to attempt login using {@link UsersRepository}
+     *
+     * @param email    - the email of the user to be logged in
+     * @param password - the password of the user to be logged in
+     * @return - the user that has been logged in
+     */
+    public Users attemptLogin(String email, String password) {
+        Users user = usersRepository.findByEmail(email);
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+            return user;
+        } else {
+            throw new ResourceNotFoundException("Passwords do not match");
+        }
     }
 }

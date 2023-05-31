@@ -93,4 +93,16 @@ public class UsersController {
     public Users getUserByEmail(@PathVariable String email) {
         return usersService.getUserByEmail(email);
     }
+
+    /**
+     * Method to log in a user using {@link UsersService}
+     *
+     * @param email    - the email of the user to be logged in
+     * @param password - the password of the user to be logged in
+     * @return - the logged-in user
+     */
+    @GetMapping("/login")
+    public Users loginUser(@RequestParam String email, @RequestParam String password) {
+        return usersService.attemptLogin(email, password);
+    }
 }

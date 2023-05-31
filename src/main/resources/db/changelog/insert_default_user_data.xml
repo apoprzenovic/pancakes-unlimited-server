@@ -21,21 +21,21 @@
         <insert tableName="users">
             <column name="email" value="customer@arnes.com"/>
             <column name="firstname" value="Customer"/>
-            <column name="lastname" value="Arnes"/>
+            <column name="lastname" value="Test"/>
             <column name="password" value="$2a$12$G9OMceF5q.JFvjp3f/4aBukDUssJ.P0pfGF3GhHjaDuyvssitJK.O"/>
             <column name="roles_id" value="1"/>
         </insert>
         <insert tableName="users">
             <column name="email" value="employee@arnes.com"/>
             <column name="firstname" value="Employee"/>
-            <column name="lastname" value="Arnes"/>
+            <column name="lastname" value="Test"/>
             <column name="password" value="$2a$12$G9OMceF5q.JFvjp3f/4aBukDUssJ.P0pfGF3GhHjaDuyvssitJK.O"/>
             <column name="roles_id" value="2"/>
         </insert>
         <insert tableName="users">
             <column name="email" value="owner@arnes.com"/>
             <column name="firstname" value="Owner"/>
-            <column name="lastname" value="Arnes"/>
+            <column name="lastname" value="Test"/>
             <column name="password" value="$2a$12$G9OMceF5q.JFvjp3f/4aBukDUssJ.P0pfGF3GhHjaDuyvssitJK.O"/>
             <column name="roles_id" value="3"/>
         </insert>
