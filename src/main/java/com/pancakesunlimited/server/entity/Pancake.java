@@ -28,12 +28,8 @@ public class Pancake {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image")
-    private String image;
-
     @Column(name = "price")
     private BigDecimal price;
-
 
     @ManyToMany
     @JoinTable(

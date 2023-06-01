@@ -1,6 +1,7 @@
 package com.pancakesunlimited.server.controller;
 
 import com.pancakesunlimited.server.entity.Orders;
+import com.pancakesunlimited.server.entity.Pancake;
 import com.pancakesunlimited.server.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -118,4 +119,16 @@ public class OrdersController {
     public List<Orders> getUserOrders(@PathVariable Integer userId) {
         return ordersService.getUserOrders(userId);
     }
+
+    /**
+     * Method to get all pancakes for a specific order using {@link OrdersService}
+     *
+     * @param orderId - the id of the order whose pancakes should be returned
+     * @return - a list of all pancakes for the specified order
+     */
+    @GetMapping("/{orderId}/pancakes")
+    public List<Pancake> getPancakesForOrder(@PathVariable Integer orderId) {
+        return ordersService.getPancakesForOrder(orderId);
+    }
+
 }

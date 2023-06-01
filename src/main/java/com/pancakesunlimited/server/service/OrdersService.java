@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Arnes Poprzenovic
@@ -125,6 +126,7 @@ public class OrdersService {
 
     /**
      * Method get Order by id only using {@link OrdersRepository}
+     *
      * @param id - the id of the order to be returned
      * @return - the order with the specified id
      */
@@ -217,5 +219,17 @@ public class OrdersService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User" + "id: " + userId));
         return user.getRoles().getId() == UserRole.STORE_OWNER.getId();
+    }
+
+    /**
+     * Method to get all pancakes for an order
+     *
+     * @param orderId - the id of the order
+     * @return - a list of all pancakes for the order
+     */
+    public List<Pancake> getPancakesForOrder(Integer orderId) {
+        Orders currentOrder = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order" + "id: " + orderId));
+        return currentOrder.getOrdersPancakes().stream().map(OrdersPancake::getPancake).collect(Collectors.toList());
     }
 }

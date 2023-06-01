@@ -47,7 +47,6 @@
     <!-- Insert default data for pancake table -->
     <changeSet id="2" author="Arnes Poprzenovic">
         <insert tableName="pancake">
-            <column name="image" value="https://www.realsimple.com/thmb/u0FflZ0sazXanhitWueM3LaXkaw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/how-to-make-pancakes-step-by-step-bf45f02d4b3c4392bddf92e05c9e17eb.jpg"/>
             <column name="name" value="Crepe with Nutella and Strawberries"/>
             <column name="price" value="5.50"/>
         </insert>

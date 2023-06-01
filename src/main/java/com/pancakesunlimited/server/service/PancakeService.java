@@ -79,10 +79,6 @@ public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
         currentPancake.setName(pancakeDetails.getName());
     }
 
-    if (pancakeDetails.getImage() != null && !pancakeDetails.getImage().isEmpty()) {
-        currentPancake.setImage(pancakeDetails.getImage());
-    }
-
     if (pancakeDetails.getIngredients() != null && !pancakeDetails.getIngredients().isEmpty()) {
         fetchIngredients(currentPancake);
     }
