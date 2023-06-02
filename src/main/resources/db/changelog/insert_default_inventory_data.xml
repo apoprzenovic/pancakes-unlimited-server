@@ -8,47 +8,89 @@
     <!-- insert default data for ingredient table -->
     <changeSet id="1" author="Arnes Poprzenovic">
         <insert tableName="ingredient">
-            <column name="name" value="Crepe"/>
+            <column name="name" value="Crepes"/>
             <column name="category" value="base"/>
-            <column name="price" value="2.50"/>
+            <column name="price" value="20.00"/>
             <column name="healthy" value="false"/>
-            <column name="image" value="crepe_image_url"/>
+            <column name="image" value="https://www.foodandwine.com/thmb/gGyN1ua0CtnkphgYc6yhSR7SKG0=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/basic-crepes-FT-RECIPE0920-34a127803e294b47acc8e290892ed98d.jpg"/>
         </insert>
         <insert tableName="ingredient">
-            <column name="name" value="American Pancake"/>
+            <column name="name" value="American Pancakes"/>
             <column name="category" value="base"/>
-            <column name="price" value="3.00"/>
+            <column name="price" value="20.00"/>
             <column name="healthy" value="false"/>
-            <column name="image" value="https://hips.hearstapps.com/clv.h-cdn.co/assets/15/22/1432664914-strawberry-facts1.jpg?resize=980:*"/>
+            <column name="image" value="https://jackslobodian.com/wp-content/uploads/2020/05/American-Pancakes-768x511.jpg"/>
         </insert>
         <insert tableName="ingredient">
-            <column name="name" value="Oreo"/>
+            <column name="name" value="Oreos"/>
             <column name="category" value="topping"/>
-            <column name="price" value="1.00"/>
+            <column name="price" value="8.00"/>
             <column name="healthy" value="false"/>
-            <column name="image" value="https://hips.hearstapps.com/clv.h-cdn.co/assets/15/22/1432664914-strawberry-facts1.jpg?resize=980:*"/>
+            <column name="image" value="https://st.depositphotos.com/1692343/4390/i/600/depositphotos_43904313-stock-photo-unhealthy-chocolate-cookies-with-cream.jpg"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Strawberries"/>
             <column name="category" value="fruit"/>
-            <column name="price" value="1.50"/>
+            <column name="price" value="12.00"/>
             <column name="healthy" value="true"/>
-            <column name="image" value="https://hips.hearstapps.com/clv.h-cdn.co/assets/15/22/1432664914-strawberry-facts1.jpg?resize=980:*"/>
+            <column name="image" value="https://media-cldnry.s-nbcnews.com/image/upload/t_fit-560w,f_auto,q_auto:best/rockcms/2022-11/strawberries-2-te-221104-dcb446.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Orange Jam"/>
+            <column name="category" value="filling"/>
+            <column name="price" value="10.00"/>
+            <column name="healthy" value="true"/>
+            <column name="image" value="https://www.corriecooks.com/wp-content/uploads/2018/08/Instant-Pot-orange-jam-using-sugar.jpg"/>
         </insert>
         <insert tableName="ingredient">
             <column name="name" value="Nutella"/>
             <column name="category" value="filling"/>
-            <column name="price" value="1.50"/>
+            <column name="price" value="12.00"/>
             <column name="healthy" value="false"/>
-            <column name="image" value="https://hips.hearstapps.com/clv.h-cdn.co/assets/15/22/1432664914-strawberry-facts1.jpg?resize=980:*"/>
+            <column name="image" value="https://st2.depositphotos.com/1076504/44051/i/600/depositphotos_440516204-stock-photo-aachen-germany-jan-2021-pot.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Chocolate"/>
+            <column name="category" value="topping"/>
+            <column name="price" value="9.50"/>
+            <column name="healthy" value="false"/>
+            <column name="image" value="https://static5.depositphotos.com/1000975/435/i/600/depositphotos_4358248-stock-photo-chocolate-topping-of-cake.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Cherries"/>
+            <column name="category" value="fruit"/>
+            <column name="price" value="12.00"/>
+            <column name="healthy" value="true"/>
+            <column name="image" value="https://static3.depositphotos.com/1003587/243/i/600/depositphotos_2430498-stock-photo-cherries.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Maple Syrup"/>
+            <column name="category" value="topping"/>
+            <column name="price" value="11.50"/>
+            <column name="healthy" value="true"/>
+            <column name="image" value="https://st.depositphotos.com/16122460/53635/i/600/depositphotos_536354208-stock-photo-bottle-glass-tasty-maple-syrup.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Whipped Cream"/>
+            <column name="category" value="topping"/>
+            <column name="price" value="8.00"/>
+            <column name="healthy" value="false"/>
+            <column name="image" value="https://static8.depositphotos.com/1072747/998/i/600/depositphotos_9984248-stock-photo-cream-of-the-egg-white.jpg"/>
+        </insert>
+        <insert tableName="ingredient">
+            <column name="name" value="Strawberry Jam"/>
+            <column name="category" value="filling"/>
+            <column name="price" value="10.00"/>
+            <column name="healthy" value="true"/>
+            <column name="image" value="https://st.depositphotos.com/2427951/4658/i/600/depositphotos_46580573-stock-photo-strawberry-jam.jpg"/>
         </insert>
     </changeSet>
 
     <!-- Insert default data for pancake table -->
     <changeSet id="2" author="Arnes Poprzenovic">
         <insert tableName="pancake">
-            <column name="name" value="Crepe with Nutella and Strawberries"/>
-            <column name="price" value="5.50"/>
+            <column name="name" value="Crepes with Nutella and Strawberries"/>
+            <column name="price" value="44.00"/>
         </insert>
     </changeSet>
 
@@ -72,9 +114,9 @@
     <changeSet id="4" author="Arnes Poprzenovic">
         <insert tableName="orders">
             <column name="users_id" value="1"/>
-            <column name="description" value="First order"/>
+            <column name="description" value="1. Order"/>
             <column name="order_time" value="2023-05-27 3:52:42"/>
-            <column name="price" value="5.50"/>
+            <column name="price" value="44.00"/>
         </insert>
         <insert tableName="orders_pancake">
             <column name="orders_id" value="1"/>
@@ -86,9 +128,9 @@
     <changeSet id="5" author="Arnes Poprzenovic">
         <insert tableName="orders">
             <column name="users_id" value="1"/>
-            <column name="description" value="Second order"/>
+            <column name="description" value="2. Order"/>
             <column name="order_time" value="2023-05-28 4:52:42"/>
-            <column name="price" value="5.50"/>
+            <column name="price" value="44.00"/>
         </insert>
         <insert tableName="orders_pancake">
             <column name="orders_id" value="2"/>

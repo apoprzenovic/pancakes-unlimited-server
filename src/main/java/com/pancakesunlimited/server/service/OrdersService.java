@@ -85,7 +85,8 @@ public class OrdersService {
                     .orElseThrow(() -> new RuntimeException("Pancake not found"));
             ordersPancake.setPancake(pancake);
         }
-        calculatePrice(order);
+        if(order.getPrice() == null)
+            calculatePrice(order);
         return ordersRepository.save(order);
     }
 
@@ -233,5 +234,14 @@ public class OrdersService {
         Orders currentOrder = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order" + "id: " + orderId));
         return currentOrder.getOrdersPancakes().stream().map(OrdersPancake::getPancake).collect(Collectors.toList());
+    }
+
+    /**
+     * Method to get the amount of orders for a user
+     * @param id - the id of the user
+     * @return - the amount of orders for the user
+     */
+    public Integer getAmountOfOrders(Integer id) {
+        return ordersRepository.findAllByUsersId(id).size();
     }
 }

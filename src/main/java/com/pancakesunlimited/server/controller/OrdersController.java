@@ -135,4 +135,14 @@ public class OrdersController {
         return ordersService.getPancakesForOrder(orderId);
     }
 
+    /**
+     * Method to get the amount of orders for a specific user using {@link OrdersService}
+     * @param id - the id of the user whose amount of orders should be returned
+     * @return - the amount of orders for the specified user
+     */
+    @GetMapping("user/{id}/amountOfOrders")
+    public Integer getAmountOfOrders(@PathVariable Integer id) {
+        return ordersService.getAmountOfOrders(id);
+    }
+
 }
