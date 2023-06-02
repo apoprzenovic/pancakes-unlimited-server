@@ -32,15 +32,32 @@ class OrdersControllerTest {
     }
 
     /**
+     * Method to test the {@link OrdersController#createOrder(Orders)} method
+     */
+    @Test
+    void createOrder() {
+        Orders expectedOrder = new Orders();
+        expectedOrder.setId(1);
+
+        Orders newOrder = new Orders();
+
+        when(ordersService.createOrder(newOrder)).thenReturn(expectedOrder);
+
+        Orders actualOrder = ordersController.createOrder(newOrder);
+
+        assertEquals(expectedOrder, actualOrder);
+    }
+
+    /**
      * Method to test the {@link OrdersController(Integer)} method
      */
     @Test
     void getOrder() {
         Orders expectedOrder = new Orders();
         expectedOrder.setId(1);
-        when(ordersService.getOrderById(1,3)).thenReturn(expectedOrder);
+        when(ordersService.getOrderById(1, 3)).thenReturn(expectedOrder);
 
-        Orders actualOrder = ordersController.getOrder(1,3);
+        Orders actualOrder = ordersController.getOrder(1, 3);
 
         assertEquals(expectedOrder, actualOrder);
     }

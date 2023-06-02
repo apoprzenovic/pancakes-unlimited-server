@@ -3,8 +3,11 @@ package com.pancakesunlimited.server.controller;
 import com.pancakesunlimited.server.entity.Orders;
 import com.pancakesunlimited.server.entity.Pancake;
 import com.pancakesunlimited.server.service.OrdersService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,10 +59,11 @@ public class OrdersController {
      * @param order - the order to be created
      * @return - the created order
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Orders createOrder(@RequestBody Orders order) {
         return ordersService.createOrder(order);
     }
+
 
     /**
      * Method to update an order using {@link OrdersService}

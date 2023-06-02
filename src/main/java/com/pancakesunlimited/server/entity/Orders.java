@@ -3,10 +3,8 @@ package com.pancakesunlimited.server.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,18 +30,16 @@ public class Orders {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @Column(name = "label")
-    private String label;
-
     @Column(name = "description")
     private String description;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "order_time")
+    @CreationTimestamp
+    @Column(name = "order_time", updatable = false)
     private LocalDateTime orderTime;
 
-    @OneToMany(mappedBy = "order")
-    @JsonManagedReference
+    @ToString.Exclude
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonManagedReference("orders-ordersPancakes")
     private List<OrdersPancake> ordersPancakes;
 
     @Column(name = "price")

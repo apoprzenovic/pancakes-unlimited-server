@@ -72,7 +72,6 @@
     <changeSet id="4" author="Arnes Poprzenovic">
         <insert tableName="orders">
             <column name="users_id" value="1"/>
-            <column name="label" value="Order 1"/>
             <column name="description" value="First order"/>
             <column name="order_time" value="2023-05-27 3:52:42"/>
         </insert>
@@ -86,7 +85,6 @@
     <changeSet id="5" author="Arnes Poprzenovic">
         <insert tableName="orders">
             <column name="users_id" value="1"/>
-            <column name="label" value="Order 2"/>
             <column name="description" value="Second order"/>
             <column name="order_time" value="2023-05-28 4:52:42"/>
         </insert>

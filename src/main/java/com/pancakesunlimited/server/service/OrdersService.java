@@ -79,6 +79,12 @@ public class OrdersService {
      * @return - the created order
      */
     public Orders createOrder(Orders order) {
+        List<OrdersPancake> ordersPancakes = order.getOrdersPancakes();
+        for (OrdersPancake ordersPancake : ordersPancakes) {
+            Pancake pancake = pancakeRepository.findById(ordersPancake.getPancake().getId())
+                    .orElseThrow(() -> new RuntimeException("Pancake not found"));
+            ordersPancake.setPancake(pancake);
+        }
         calculatePrice(order);
         return ordersRepository.save(order);
     }
@@ -92,10 +98,6 @@ public class OrdersService {
      */
     public Orders updateOrder(Integer id, Orders orderDetails) {
         Orders currentOrder = getOrderByIdOnly(id);
-
-        if (orderDetails.getLabel() != null) {
-            currentOrder.setLabel(orderDetails.getLabel());
-        }
 
         if (orderDetails.getDescription() != null) {
             currentOrder.setDescription(orderDetails.getDescription());

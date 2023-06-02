@@ -110,9 +110,6 @@
             <column name="users_id" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="label" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
             <column name="description" type="varchar(255)"/>
             <column name="order_time" type="datetime">
                 <constraints nullable="false"/>

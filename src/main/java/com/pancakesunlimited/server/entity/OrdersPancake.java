@@ -2,10 +2,7 @@ package com.pancakesunlimited.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author Arnes Poprzenovic
@@ -22,13 +19,13 @@ public class OrdersPancake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "orders_id")
-    @JsonBackReference
+    @JsonBackReference("orders-ordersPancakes")
     private Orders order;
 
     @ManyToOne
     @JoinColumn(name = "pancake_id")
-    @JsonBackReference
     private Pancake pancake;
 }
