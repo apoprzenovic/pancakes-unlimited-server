@@ -74,6 +74,7 @@
             <column name="users_id" value="1"/>
             <column name="description" value="First order"/>
             <column name="order_time" value="2023-05-27 3:52:42"/>
+            <column name="price" value="5.50"/>
         </insert>
         <insert tableName="orders_pancake">
             <column name="orders_id" value="1"/>
@@ -87,6 +88,7 @@
             <column name="users_id" value="1"/>
             <column name="description" value="Second order"/>
             <column name="order_time" value="2023-05-28 4:52:42"/>
+            <column name="price" value="5.50"/>
         </insert>
         <insert tableName="orders_pancake">
             <column name="orders_id" value="2"/>
