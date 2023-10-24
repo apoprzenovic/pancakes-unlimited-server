@@ -2,6 +2,7 @@ package com.pancakesunlimited.server.repository;
 
 import com.pancakesunlimited.server.entity.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
