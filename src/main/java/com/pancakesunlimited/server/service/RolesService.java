@@ -4,84 +4,52 @@ import com.pancakesunlimited.server.entity.Roles;
 import com.pancakesunlimited.server.exception.ResourceNotFoundException;
 import com.pancakesunlimited.server.repository.RolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author Arnes Poprzenovic
- * Service class for the {@link Roles} Entity
- */
 @Service
 public class RolesService {
 
     private final RolesRepository rolesRepository;
 
-    /**
-     * Constructor for the RolesService class
-     *
-     * @param rolesRepository - the repository for the {@link Roles} Entity
-     */
     @Autowired
     public RolesService(RolesRepository rolesRepository) {
         this.rolesRepository = rolesRepository;
     }
 
-    /**
-     * Method to get all roles using {@link RolesRepository}
-     *
-     * @return - a list of all roles
-     */
-    public List<Roles> getAllRoles() {
-        return rolesRepository.findAll();
+    public ResponseEntity<List<Roles>> getAllRoles() {
+        List<Roles> roles = rolesRepository.findAll();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
-    /**
-     * Method to get a role by id using {@link RolesRepository}
-     *
-     * @param id - the id of the role to be returned
-     * @return - the role with the specified id
-     */
-    public Roles getRoleById(Integer id) {
-        return rolesRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient" + "id: " + id));
+    public ResponseEntity<Roles> getRoleById(Integer id) {
+        Roles role = rolesRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Role" + "id: " + id));
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
-    /**
-     * Method to create a role using {@link RolesRepository}
-     *
-     * @param role - the role to be created
-     * @return - the created role
-     */
-    public Roles createRole(Roles role) {
-        return rolesRepository.save(role);
+    public ResponseEntity<Roles> createRole(Roles role) {
+        Roles createdRole = rolesRepository.save(role);
+        return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
-    /**
-     * Method to update a role using {@link RolesRepository}
-     *
-     * @param id          - the id of the role to be updated
-     * @param roleDetails - the role details to be updated
-     * @return - the updated role
-     */
-    public Roles updateRole(Integer id, Roles roleDetails) {
-        Roles currentRole = getRoleById(id);
+    public ResponseEntity<Roles> updateRole(Integer id, Roles roleDetails) {
+        Roles currentRole = getRoleById(id).getBody();
 
         if (roleDetails.getName() != null && !roleDetails.getName().isEmpty()) {
             currentRole.setName(roleDetails.getName());
         }
 
-        return rolesRepository.save(currentRole);
+        Roles updatedRole = rolesRepository.save(currentRole);
+        return new ResponseEntity<>(updatedRole, HttpStatus.OK);
     }
 
-
-    /**
-     * Method to delete a role using {@link RolesRepository}
-     *
-     * @param id - the id of the role to be deleted
-     */
-    public void deleteRole(Integer id) {
-        Roles role = getRoleById(id);
+    public ResponseEntity<Void> deleteRole(Integer id) {
+        Roles role = getRoleById(id).getBody();
         rolesRepository.delete(role);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

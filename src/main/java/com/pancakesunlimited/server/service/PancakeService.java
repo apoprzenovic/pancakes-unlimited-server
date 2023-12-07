@@ -1,111 +1,74 @@
 package com.pancakesunlimited.server.service;
 
+import com.pancakesunlimited.server.entity.Ingredient;
 import com.pancakesunlimited.server.entity.Pancake;
 import com.pancakesunlimited.server.exception.ResourceNotFoundException;
 import com.pancakesunlimited.server.repository.IngredientRepository;
 import com.pancakesunlimited.server.repository.PancakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.pancakesunlimited.server.entity.Ingredient;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * @author Arnes Poprzenovic
- * Service class for the {@link Pancake} Entity
- */
 @Service
 public class PancakeService {
 
     private final PancakeRepository pancakeRepository;
     private final IngredientRepository ingredientRepository;
 
-    /**
-     * Constructor for the PancakeService class
-     *
-     * @param pancakeRepository    - the repository for the {@link Pancake} Entity
-     * @param ingredientRepository - the repository for the {@link Ingredient} Entity
-     */
     @Autowired
     public PancakeService(PancakeRepository pancakeRepository, IngredientRepository ingredientRepository) {
         this.pancakeRepository = pancakeRepository;
         this.ingredientRepository = ingredientRepository;
     }
 
-    /**
-     * Method to get all pancakes using {@link PancakeRepository}
-     *
-     * @return - a list of all pancakes
-     */
-    public List<Pancake> getAllPancakes() {
-        return pancakeRepository.findAll();
+    public ResponseEntity<List<Pancake>> getAllPancakes() {
+        List<Pancake> pancakes = pancakeRepository.findAll();
+        return new ResponseEntity<>(pancakes, HttpStatus.OK);
     }
 
-    /**
-     * Method to get a pancake by id using {@link PancakeRepository}
-     *
-     * @param id - the id of the pancake to be returned
-     * @return - the pancake with the specified id
-     */
-    public Pancake getPancakeById(Integer id) {
-        return pancakeRepository.findById(id)
+    public ResponseEntity<Pancake> getPancakeById(Integer id) {
+        Pancake pancake = pancakeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pancake" + "id: " + id));
+        return new ResponseEntity<>(pancake, HttpStatus.OK);
     }
 
-    /**
-     * Method to create a pancake using {@link PancakeRepository}
-     *
-     * @param pancake - the pancake to be created
-     * @return - the created pancake
-     */
-    public Pancake createPancake(Pancake pancake) {
+    public ResponseEntity<Pancake> createPancake(Pancake pancake) {
         fetchIngredients(pancake);
         calculatePrice(pancake);
-        return pancakeRepository.save(pancake);
+        Pancake createdPancake = pancakeRepository.save(pancake);
+        return new ResponseEntity<>(createdPancake, HttpStatus.CREATED);
     }
 
-    /**
-     * Method to update a pancake using {@link PancakeRepository}
-     *
-     * @param id             - the id of the pancake to be updated
-     * @param pancakeDetails - the pancake details to be updated
-     * @return - the updated pancake
-     */
-public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
-    Pancake currentPancake = getPancakeById(id);
+    public ResponseEntity<Pancake> updatePancake(Integer id, Pancake pancakeDetails) {
+        Pancake currentPancake = getPancakeById(id).getBody();
 
-    if (pancakeDetails.getName() != null && !pancakeDetails.getName().isEmpty()) {
-        currentPancake.setName(pancakeDetails.getName());
+        if (pancakeDetails.getName() != null && !pancakeDetails.getName().isEmpty()) {
+            currentPancake.setName(pancakeDetails.getName());
+        }
+
+        if (pancakeDetails.getIngredients() != null && !pancakeDetails.getIngredients().isEmpty()) {
+            fetchIngredients(currentPancake);
+        }
+
+        assert currentPancake != null;
+        calculatePrice(currentPancake);
+
+        Pancake updatedPancake = pancakeRepository.save(currentPancake);
+        return new ResponseEntity<>(updatedPancake, HttpStatus.OK);
     }
 
-    if (pancakeDetails.getIngredients() != null && !pancakeDetails.getIngredients().isEmpty()) {
-        fetchIngredients(currentPancake);
-    }
-
-    calculatePrice(currentPancake);
-
-    return pancakeRepository.save(currentPancake);
-}
-
-
-    /**
-     * Method to calculate the price of a pancake
-     *
-     * @param id - the id of the pancake to have its price calculated
-     */
     public void deletePancake(Integer id) {
-        Pancake pancake = getPancakeById(id);
+        Pancake pancake = getPancakeById(id).getBody();
         pancakeRepository.delete(pancake);
+        new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     * Method to recalculate the prices of all pancakes that contain a specific ingredient
-     *
-     * @param updatedIngredient - the ingredient that has been updated
-     */
     public void recalculatePancakePrices(Ingredient updatedIngredient) {
-        List<Pancake> pancakes = getAllPancakes();
+        List<Pancake> pancakes = getAllPancakes().getBody();
         for (Pancake pancake : pancakes) {
             if (pancake.getIngredients().contains(updatedIngredient)) {
                 calculatePrice(pancake);
@@ -114,11 +77,6 @@ public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
         }
     }
 
-    /**
-     * Method to fetch the ingredients of a pancake
-     *
-     * @param pancake - the pancake to have its ingredients fetched
-     */
     public void fetchIngredients(Pancake pancake) {
         List<Ingredient> ingredients = pancake.getIngredients();
         for (int i = 0; i < ingredients.size(); i++) {
@@ -129,22 +87,15 @@ public Pancake updatePancake(Integer id, Pancake pancakeDetails) {
         }
     }
 
-    /**
-     * Method to calculate the price of a pancake
-     *
-     * @param pancake - the pancake to have its price calculated
-     */
     public void calculatePrice(Pancake pancake) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         List<Ingredient> ingredients = pancake.getIngredients();
         for (Ingredient ingredient : ingredients) {
-            if (ingredient.getPrice() != null) {
+            if (ingredient.getPrice() != null)
                 totalPrice = totalPrice.add(ingredient.getPrice());
-            } else {
-                System.out.println("Warning: Ingredient with ID " + ingredient.getId() + " has a null price.");
-            }
+            else
+                totalPrice = totalPrice.add(BigDecimal.ZERO);
         }
         pancake.setPrice(totalPrice);
     }
-
 }

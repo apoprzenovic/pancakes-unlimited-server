@@ -1,5 +1,7 @@
 version: '3.8'
+
 services:
+
   app:
     build:
       context: .
@@ -15,3 +17,16 @@ services:
       SPRING_LIQUIBASE_USER: super
       SPRING_LIQUIBASE_PASSWORD: Otl1.xTsh]0#
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
+
+# try to use the below variables as env var instead of the above
+# environment variables and see if it works
+
+#  db:
+#    container_name: postgres-db
+#    image: postgres
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_USER: super
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: pancakes-unlimited-database

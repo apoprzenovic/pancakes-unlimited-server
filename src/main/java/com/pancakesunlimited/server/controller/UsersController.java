@@ -4,105 +4,55 @@ import com.pancakesunlimited.server.entity.Users;
 import com.pancakesunlimited.server.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * @author Arnes Poprzenovic
- * Controller class for the users table
- */
 @RestController
 @RequestMapping("/api/pu/users")
 public class UsersController {
 
     private final UsersService usersService;
 
-    /**
-     * Constructor for the UsersController class to autowire the {@link UsersService} class
-     *
-     * @param usersService - the service for the {@link Users} Entity
-     */
     @Autowired
     public UsersController(UsersService usersService) {
         this.usersService = usersService;
     }
 
-    /**
-     * Method to get all users using {@link UsersService}
-     *
-     * @return - a list of all users
-     */
     @GetMapping
-    public List<Users> getAllUsers() {
+    public ResponseEntity<List<Users>> getAllUsers() {
         return usersService.getAllUsers();
     }
 
-    /**
-     * Method to get a user by id using {@link UsersService}
-     *
-     * @param id - the id of the user to be returned
-     * @return - the user with the specified id
-     */
     @GetMapping("/{id}")
-    public Users getUser(@PathVariable Integer id) {
+    public ResponseEntity<Users> getUser(@PathVariable Integer id) {
         return usersService.getUserById(id);
     }
 
-    /**
-     * Method to create a user using {@link UsersService}
-     *
-     * @param user - the user to be created
-     * @return - the created user
-     */
     @PostMapping
-    public Users createUser(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@RequestBody Users user) {
         return usersService.createUser(user);
     }
 
-    /**
-     * Method to update a user using {@link UsersService}
-     *
-     * @param id          - the id of the user to be updated
-     * @param userDetails - the user details to be updated
-     * @return - the updated user
-     */
     @PutMapping("/{id}")
-    public Users updateUser(@PathVariable Integer id, @RequestBody Users userDetails) {
+    public ResponseEntity<Users> updateUser(@PathVariable Integer id, @RequestBody Users userDetails) {
         return usersService.updateUser(id, userDetails);
     }
 
-    /**
-     * Method to delete a user using {@link UsersService}
-     *
-     * @param id - the id of the user to be deleted
-     */
     @DeleteMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         usersService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     * Method to get a user by email using {@link UsersService}
-     *
-     * @param email - the email of the user to be returned
-     * @return - the user with the specified email
-     */
     @GetMapping("/email/{email}")
-    public Users getUserByEmail(@PathVariable String email) {
-        return usersService.getUserByEmail(email);
+    public ResponseEntity<Users> getUserByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(usersService.getUserByEmail(email), HttpStatus.OK);
     }
 
-    /**
-     * Method to log in a user using {@link UsersService}
-     *
-     * @param email    - the email of the user to be logged in
-     * @param password - the password of the user to be logged in
-     * @return - the logged-in user
-     */
     @GetMapping("/login")
-    public Users loginUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<Users> loginUser(@RequestParam String email, @RequestParam String password) {
         return usersService.attemptLogin(email, password);
     }
 }
