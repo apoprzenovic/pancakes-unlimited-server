@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
@@ -25,7 +27,6 @@ class IngredientControllerTest {
 
     @InjectMocks
     IngredientController ingredientController;
-
     /**
      * Method to set up the mockito annotations
      */
@@ -35,7 +36,7 @@ class IngredientControllerTest {
     }
 
     /**
-     * Method to test the {@link IngredientController#getIngredient(Integer)} method
+     * Method to test the {@link IngredientController#getAllIngredients()} method
      */
     @Test
     void getAllIngredients() {
@@ -43,10 +44,11 @@ class IngredientControllerTest {
         Ingredient ingredient2 = new Ingredient();
         List<Ingredient> expectedIngredients = Arrays.asList(ingredient1, ingredient2);
 
-        when(ingredientService.getAllIngredients()).thenReturn(expectedIngredients);
+        when(ingredientService.getAllIngredients()).thenReturn(new ResponseEntity<>(expectedIngredients, HttpStatus.OK));
 
-        List<Ingredient> actualIngredients = ingredientController.getAllIngredients();
+        ResponseEntity<List<Ingredient>> actualIngredients = ingredientController.getAllIngredients();
 
-        assertEquals(expectedIngredients, actualIngredients);
+        assertEquals(expectedIngredients, actualIngredients.getBody());
+        assertEquals(HttpStatus.OK, actualIngredients.getStatusCode());
     }
 }

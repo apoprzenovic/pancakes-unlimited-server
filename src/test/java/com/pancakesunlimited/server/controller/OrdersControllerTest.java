@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
@@ -41,24 +43,26 @@ class OrdersControllerTest {
 
         Orders newOrder = new Orders();
 
-        when(ordersService.createOrder(newOrder)).thenReturn(expectedOrder);
+        when(ordersService.createOrder(newOrder)).thenReturn(new ResponseEntity<>(expectedOrder, HttpStatus.CREATED));
 
-        Orders actualOrder = ordersController.createOrder(newOrder);
+        ResponseEntity<Orders> actualOrder = ordersController.createOrder(newOrder);
 
-        assertEquals(expectedOrder, actualOrder);
+        assertEquals(expectedOrder, actualOrder.getBody());
+        assertEquals(HttpStatus.CREATED, actualOrder.getStatusCode());
     }
 
     /**
-     * Method to test the {@link OrdersController(Integer)} method
+     * Method to test the {@link OrdersController#getOrder(Integer, Integer)} method
      */
     @Test
     void getOrder() {
         Orders expectedOrder = new Orders();
         expectedOrder.setId(1);
-        when(ordersService.getOrderById(1, 3)).thenReturn(expectedOrder);
+        when(ordersService.getOrderById(1, 3)).thenReturn(new ResponseEntity<>(expectedOrder, HttpStatus.OK));
 
-        Orders actualOrder = ordersController.getOrder(1, 3);
+        ResponseEntity<Orders> actualOrder = ordersController.getOrder(1, 3);
 
-        assertEquals(expectedOrder, actualOrder);
+        assertEquals(expectedOrder, actualOrder.getBody());
+        assertEquals(HttpStatus.OK, actualOrder.getStatusCode());
     }
 }
